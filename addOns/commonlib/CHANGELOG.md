@@ -6,7 +6,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 ### Changed
+- Update minimum ZAP version to 2.17.0.
+- Update dependencies.
+
+## [1.38.0] - 2025-10-21
+### Added
+- SYSTEMIC tag.
+
+### Changed
+- Update dependencies.
+
+## [1.37.0] - 2025-10-07
+### Added
+- Support for alert reference overrides in script scan rule metadata.
+
+## [1.36.0] - 2025-09-18
+### Added
+- QA CICD policy tag.
+
+## [1.35.0] - 2025-09-02
+### Changed
 - Update dependency.
+- Expose constant related to authentication.
 
 ## [1.34.0] - 2025-07-04
 ### Added
@@ -221,6 +242,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 First version.
 
+[1.38.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.38.0
+[1.37.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.37.0
+[1.36.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.36.0
+[1.35.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.35.0
 [1.34.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.34.0
 [1.33.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.33.0
 [1.32.0]: https://github.com/zaproxy/zap-extensions/releases/commonlib-v1.32.0

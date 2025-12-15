@@ -19,19 +19,19 @@
  */
 package org.zaproxy.addon.llm.services;
 
-import com.azure.ai.openai.models.ChatCompletionsJsonResponseFormat;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.azure.AzureOpenAiChatModel;
-import dev.langchain4j.model.chat.ChatLanguageModel;
+import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.request.ResponseFormat;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import dev.langchain4j.service.AiServices;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -53,13 +53,13 @@ import org.zaproxy.zap.utils.Stats;
 public class LlmCommunicationService {
 
     private static final Logger LOGGER = LogManager.getLogger(LlmCommunicationService.class);
-    private static final String AI_REVIEWED_TAG_KEY = "AI-Reviewed";
+    protected static final String AI_REVIEWED_TAG_KEY = "AI-Reviewed";
 
     private LlmAssistant llmAssistant;
     private LlmResponseHandler listener;
     Requestor requestor;
 
-    static ChatLanguageModel model;
+    static ChatModel model;
     ChatMemory chatMemory;
 
     public LlmCommunicationService(LlmOptions options) {
@@ -69,13 +69,18 @@ public class LlmCommunicationService {
 
         llmAssistant =
                 AiServices.builder(LlmAssistant.class)
-                        .chatLanguageModel(model)
+                        .chatModel(model)
                         .chatMemory(chatMemory)
                         .build();
         requestor = new Requestor(HttpSender.MANUAL_REQUEST_INITIATOR, new HistoryPersister());
     }
 
-    private ChatLanguageModel buildModel(LlmOptions options) {
+    /** For testing purposes only. */
+    LlmCommunicationService(LlmAssistant assistant) {
+        this.llmAssistant = assistant;
+    }
+
+    private ChatModel buildModel(LlmOptions options) {
         return switch (options.getModelProvider()) {
             case AZURE_OPENAI ->
                     AzureOpenAiChatModel.builder()
@@ -83,7 +88,7 @@ public class LlmCommunicationService {
                             .deploymentName(options.getModelName())
                             .endpoint(options.getEndpoint())
                             .temperature(0.3)
-                            .responseFormat(new ChatCompletionsJsonResponseFormat())
+                            .responseFormat(ResponseFormat.JSON)
                             .listeners(List.of(listener))
                             .logRequestsAndResponses(true)
                             .build();
@@ -100,7 +105,7 @@ public class LlmCommunicationService {
         };
     }
 
-    private Integer importHttpCalls(String openapiContent) throws IOException {
+    private Integer importHttpCalls(String openapiContent) throws RuntimeException {
         Stats.incCounter("stats.llm.openapiseq.call");
         HttpRequestList listHttpRequest = llmAssistant.extractHttpRequests(openapiContent);
         if (listHttpRequest == null) {
@@ -170,7 +175,13 @@ public class LlmCommunicationService {
             LOGGER.debug("Reviewing alert : {}", alert.getName());
             LOGGER.debug("Confidence level from ZAP : {}", alert.getConfidence());
             Stats.incCounter("stats.llm.alertreview.call");
-            llmConfidence = llmAssistant.review(alert.getDescription(), alert.getEvidence());
+            if (alert.getOtherInfo().isBlank()) {
+                llmConfidence = llmAssistant.review(alert.getDescription(), alert.getEvidence());
+            } else {
+                llmConfidence =
+                        llmAssistant.review(
+                                alert.getDescription(), alert.getEvidence(), alert.getOtherInfo());
+            }
 
             if (llmConfidence.getLevel() == alert.getConfidence()) {
                 Stats.incCounter("stats.llm.alertreview.result.same");
@@ -184,14 +195,14 @@ public class LlmCommunicationService {
                     llmConfidence.getExplanation());
             updatedAlert.setConfidence(llmConfidence.getLevel());
             updatedAlert.setOtherInfo(getUpdatedOtherInfo(alert, llmConfidence));
-            Map<String, String> alertTags = alert.getTags();
+            Map<String, String> alertTags = new HashMap<>(alert.getTags());
 
             alertTags.putIfAbsent(AI_REVIEWED_TAG_KEY, "");
             updatedAlert.setTags(alertTags);
 
             try {
                 getExtAlert().updateAlert(updatedAlert);
-                getExtAlert().updateAlertInTree(originalAlert, updatedAlert);
+                getExtAlert().updateAlertInTree(updatedAlert);
                 if (alert.getHistoryRef() != null) {
                     alert.getHistoryRef().updateAlert(updatedAlert);
                     if (alert.getHistoryRef().getSiteNode() != null) {
@@ -206,8 +217,8 @@ public class LlmCommunicationService {
         }
     }
 
-    private static boolean isPreviouslyReviewed(Alert alert) {
-        return !alert.getTags().containsKey(AI_REVIEWED_TAG_KEY);
+    protected static boolean isPreviouslyReviewed(Alert alert) {
+        return alert.getTags().containsKey(AI_REVIEWED_TAG_KEY);
     }
 
     private static String getUpdatedOtherInfo(Alert alert, Confidence llmConfidence) {

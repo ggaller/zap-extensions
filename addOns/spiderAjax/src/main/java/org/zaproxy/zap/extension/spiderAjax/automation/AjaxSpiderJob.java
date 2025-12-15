@@ -78,6 +78,7 @@ public class AjaxSpiderJob extends AutomationJob {
 
     private Data data;
     private Parameters parameters = new Parameters();
+    private boolean forceStop;
 
     public AjaxSpiderJob() {
         this.data = new Data(this, parameters);
@@ -326,6 +327,7 @@ public class AjaxSpiderJob extends AutomationJob {
         AjaxSpiderTarget target = targetBuilder.build();
         JobSpiderListener listener = new JobSpiderListener();
 
+        forceStop = false;
         SpiderThread spiderThread =
                 getExtSpider()
                         .createSpiderThread(
@@ -344,7 +346,6 @@ public class AjaxSpiderJob extends AutomationJob {
         }
 
         // Wait for the ajax spider to finish
-        boolean forceStop = false;
         int numUrlsFound = 0;
         int lastCount = 0;
 
@@ -352,10 +353,12 @@ public class AjaxSpiderJob extends AutomationJob {
             this.sleep(500);
 
             numUrlsFound = listener.getMessagesFound();
+            // Should remove this at some point, but its almost certainly being used by existing AF
+            // jobs
             Stats.incCounter("spiderAjax.urls.added", numUrlsFound - lastCount);
             lastCount = numUrlsFound;
 
-            if (!spiderThread.isRunning()) {
+            if (!spiderThread.isRunning() || forceStop) {
                 break;
             }
             if (!this.runMonitorTests(progress) || System.currentTimeMillis() > endTime) {
@@ -371,6 +374,11 @@ public class AjaxSpiderJob extends AutomationJob {
         progress.info(
                 Constant.messages.getString(
                         "automation.info.urlsfound", this.getType(), numUrlsFound));
+    }
+
+    @Override
+    public void stop() {
+        forceStop = true;
     }
 
     private ContextWrapper getContextWrapper(

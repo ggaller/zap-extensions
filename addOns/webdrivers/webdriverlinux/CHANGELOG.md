@@ -6,6 +6,87 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## Unreleased
 
 
+## [169] - 2025-12-10
+### Changed
+- Update ChromeDriver to 143.0.7499.42.
+- Update minimum ZAP version to 2.17.0.
+
+## [168] - 2025-12-02
+### Changed
+- Update ChromeDriver to 143.0.7499.40.
+
+## [167] - 2025-11-17
+### Changed
+- Update ChromeDriver to 142.0.7444.175.
+
+## [166] - 2025-11-11
+### Changed
+- Update ChromeDriver to 142.0.7444.162.
+
+## [165] - 2025-11-05
+### Changed
+- Update ChromeDriver to 142.0.7444.61.
+
+## [164] - 2025-10-28
+### Changed
+- Update ChromeDriver to 142.0.7444.59.
+
+## [163] - 2025-10-21
+### Changed
+- Update ChromeDriver to 141.0.7390.122.
+
+## [162] - 2025-10-14
+### Changed
+- Update ChromeDriver to 141.0.7390.78.
+
+## [161] - 2025-10-09
+### Changed
+- Update ChromeDriver to 141.0.7390.76.
+
+## [160] - 2025-10-07
+### Changed
+- Update ChromeDriver to 141.0.7390.65.
+
+## [159] - 2025-09-30
+### Changed
+- Update ChromeDriver to 141.0.7390.54.
+
+## [158] - 2025-09-23
+### Changed
+- Update ChromeDriver to 140.0.7339.207.
+
+## [157] - 2025-09-18
+### Changed
+- Update ChromeDriver to 140.0.7339.185.
+
+## [156] - 2025-09-09
+### Changed
+- Update ChromeDriver to 140.0.7339.82.
+
+## [155] - 2025-09-02
+### Changed
+- Update ChromeDriver to 140.0.7339.80.
+
+## [154] - 2025-08-26
+### Changed
+- Update ChromeDriver to 139.0.7258.154.
+
+## [153] - 2025-08-19
+### Changed
+- Update ChromeDriver to 139.0.7258.138.
+
+## [152] - 2025-08-12
+### Changed
+- Update ChromeDriver to 139.0.7258.68.
+
+## [151] - 2025-08-05
+### Changed
+- Update ChromeDriver to 139.0.7258.66.
+
+## [150] - 2025-07-29
+### Changed
+- Update ChromeDriver to 138.0.7204.183.
+
 ## [149] - 2025-07-22
 ### Changed
 - Update ChromeDriver to 138.0.7204.168.
@@ -625,6 +706,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First release: Firefox v0.13.0 Chrome v2.27
 
+[169]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v169
+[168]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v168
+[167]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v167
+[166]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v166
+[165]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v165
+[164]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v164
+[163]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v163
+[162]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v162
+[161]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v161
+[160]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v160
+[159]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v159
+[158]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v158
+[157]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v157
+[156]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v156
+[155]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v155
+[154]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v154
+[153]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v153
+[152]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v152
+[151]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v151
+[150]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v150
 [149]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v149
 [148]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v148
 [147]: https://github.com/zaproxy/zap-extensions/releases/webdriverlinux-v147

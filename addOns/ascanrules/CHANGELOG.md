@@ -4,6 +4,49 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Added
+- The following scan rules were added, having been promoted from beta:
+  - Exponential Entity Expansion (Billion Laughs Attack)
+  - HTTP Only Site
+  - HTTPS Content Available via HTTP
+  - ShellShock - CVE-2014-6271
+
+### Changed
+- Update dependency.
+- Update minimum ZAP version to 2.17.0.
+
+## [77] - 2025-12-05
+### Fixed
+- React2Shell multipart boundries.
+
+## [76] - 2025-12-05
+### Added
+- Remote Code Execution (React2Shell) Scan Rule (CVE-2025-55182, CVE-2025-66478)
+
+### Changed
+- The External Redirect scan rule has been updated to account for potential false positives involving JavaScript comments.
+
+## [75] - 2025-11-04
+### Added
+- SYSTEMIC tag to selected rules.
+
+### Changed
+- Address potential false positives with the XSLT Injection scan rule when payloads cause a failure which may still contain the expected evidence.
+- Depends on an updated version of the Common Library add-on.
+- Reduced usage of error level logging.
+
+## [74] - 2025-09-18
+### Added
+- QA CICD policy tag to selected rules.
+
+### Changed
+- Update alert references to latest locations to fix 404s and resolve redirections.
+- The SQL Injection - Oracle (Time Based) rule now uses DBMS_SESSION.SLEEP instead of an "expensive" query.
+
+### Fixed
+- Hidden Files rule raising false positives if server returning 200 for files that don't exist (Issue 8434).
+
+## [73] - 2025-09-02
 ### Changed
 - Maintenance changes.
 - Depends on an updated version of the Common Library add-on.
@@ -15,11 +58,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
     - SQL Injection - SQLite
     - SQL Injection - PostgreSQL
 - The Remote OS Command Injection scan rule has been broken into two rules; one feedback based, and one time based (Issue 7341). This includes assigning the time based rule ID 90037.
+- The External Redirect scan rule payload were slightly re-ordered to prioritize HTTPS variants.
+- For Alerts raised by the SQL Injection scan rules the Attack field values are now simply the payload, not an assembled description.
+- The Cross Site Scripting (Reflected) scan rule was updated to address potential false negatives when the injection context is a tag name and there is some filtering.
+- The Path Traversal scan rule now includes further details when directory matches are made (Issue 8379).
+- Add help details about behavior of scan rules which leverage OAST (Issue 8682).
 
 ### Added
 - Rules (as applicable) have been tagged in relation to HIPAA and PCI DSS.
 - The Cloud Metadata Potentially Exposed scan rules now has a CWE reference.
 - Scan rules which execute time based attacks now include the "TEST_TIMING" alert tag.
+- The XPath Injection scan rule now supports error patterns provided via the Custom Payloads add-on (Issue 8958). A minimum of Custom Payloads 0.15.0 is required to take advantage of this optional functionality.
 
 ## [72] - 2025-06-20
 ### Added
@@ -609,6 +658,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[77]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v77
+[76]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v76
+[75]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v75
+[74]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v74
+[73]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v73
 [72]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v72
 [71]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v71
 [70]: https://github.com/zaproxy/zap-extensions/releases/ascanrules-v70

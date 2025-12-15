@@ -183,7 +183,7 @@ class UserControlledCookieScanRuleUnitTest
         // Given / When
         Map<String, String> tags = rule.getAlertTags();
         // Then
-        assertThat(tags.size(), is(equalTo(5)));
+        assertThat(tags.size(), is(equalTo(6)));
         assertThat(
                 tags.containsKey(CommonAlertTag.OWASP_2021_A03_INJECTION.getTag()),
                 is(equalTo(true)));
@@ -199,6 +199,9 @@ class UserControlledCookieScanRuleUnitTest
         assertThat(
                 tags.get(CommonAlertTag.OWASP_2017_A01_INJECTION.getTag()),
                 is(equalTo(CommonAlertTag.OWASP_2017_A01_INJECTION.getValue())));
+        assertThat(
+                tags.get(CommonAlertTag.SYSTEMIC.getTag()),
+                is(equalTo(CommonAlertTag.SYSTEMIC.getValue())));
     }
 
     @Test
@@ -210,11 +213,5 @@ class UserControlledCookieScanRuleUnitTest
         Alert alert = alerts.get(0);
         assertThat(alert.getRisk(), is(equalTo(Alert.RISK_INFO)));
         assertThat(alert.getConfidence(), is(equalTo(Alert.CONFIDENCE_LOW)));
-    }
-
-    @Test
-    @Override
-    public void shouldHaveValidReferences() {
-        super.shouldHaveValidReferences();
     }
 }

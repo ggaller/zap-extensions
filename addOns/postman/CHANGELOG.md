@@ -5,6 +5,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
 ### Changed
+- Update minimum ZAP version to 2.17.0.
+
+## [0.8.0] - 2025-11-10
+### Added
+- Statistics.
+
+## [0.7.0] - 2025-09-02
+### Changed
 - Enable API functionality for imports.
 
 ## [0.6.0] - 2025-02-03
@@ -39,6 +47,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version.
 
+[0.8.0]: https://github.com/zaproxy/zap-extensions/releases/postman-v0.8.0
+[0.7.0]: https://github.com/zaproxy/zap-extensions/releases/postman-v0.7.0
 [0.6.0]: https://github.com/zaproxy/zap-extensions/releases/postman-v0.6.0
 [0.5.0]: https://github.com/zaproxy/zap-extensions/releases/postman-v0.5.0
 [0.4.0]: https://github.com/zaproxy/zap-extensions/releases/postman-v0.4.0

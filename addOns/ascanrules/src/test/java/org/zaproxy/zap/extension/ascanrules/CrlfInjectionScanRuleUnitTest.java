@@ -75,12 +75,6 @@ class CrlfInjectionScanRuleUnitTest extends ActiveScannerTest<CrlfInjectionScanR
     }
 
     @Test
-    @Override
-    public void shouldHaveValidReferences() {
-        super.shouldHaveValidReferences();
-    }
-
-    @Test
     void shouldReturnExpectedMappings() {
         // Given / When
         int cwe = rule.getCweId();
@@ -89,7 +83,7 @@ class CrlfInjectionScanRuleUnitTest extends ActiveScannerTest<CrlfInjectionScanR
         // Then
         assertThat(cwe, is(equalTo(113)));
         assertThat(wasc, is(equalTo(25)));
-        assertThat(tags.size(), is(equalTo(8)));
+        assertThat(tags.size(), is(equalTo(9)));
         assertThat(
                 tags.containsKey(CommonAlertTag.OWASP_2021_A03_INJECTION.getTag()),
                 is(equalTo(true)));
@@ -113,6 +107,9 @@ class CrlfInjectionScanRuleUnitTest extends ActiveScannerTest<CrlfInjectionScanR
         assertThat(
                 tags.get(CommonAlertTag.WSTG_V42_INPV_15_HTTP_SPLITTING.getTag()),
                 is(equalTo(CommonAlertTag.WSTG_V42_INPV_15_HTTP_SPLITTING.getValue())));
+        assertThat(
+                tags.get(CommonAlertTag.SYSTEMIC.getTag()),
+                is(equalTo(CommonAlertTag.SYSTEMIC.getValue())));
     }
 
     @Test

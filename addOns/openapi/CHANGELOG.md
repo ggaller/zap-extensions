@@ -4,9 +4,22 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- Dependency updates.
+- Update minimum ZAP version to 2.17.0.
+
+## [47] - 2025-11-04
+### Changed
+- Dependency updates.
+
+### Fixed
+- Include URLs from context verbatim.
+
+## [46] - 2025-09-10
 
 ### Fixed
 - Warn logs to always include stack trace.
+- Correct generation of empty object.
 
 ## [45] - 2025-03-24
 ### Fixed
@@ -344,6 +357,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First Version
 
+[47]: https://github.com/zaproxy/zap-extensions/releases/openapi-v47
+[46]: https://github.com/zaproxy/zap-extensions/releases/openapi-v46
 [45]: https://github.com/zaproxy/zap-extensions/releases/openapi-v45
 [44]: https://github.com/zaproxy/zap-extensions/releases/openapi-v44
 [43]: https://github.com/zaproxy/zap-extensions/releases/openapi-v43

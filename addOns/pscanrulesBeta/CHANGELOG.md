@@ -4,7 +4,30 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- Update minimum ZAP version to 2.17.0.
 
+### Removed
+- The following scan rules were removed, having been promoted to Beta:
+  - In Page Banner Information Leak
+  - Java Serialization Object
+  - Sub Resource Integrity Attribute Missing
+
+## [47] - 2025-11-04
+### Added
+- SYSTEMIC tag to selected rules.
+
+### Changed
+- Depends on an updated version of the Common Library add-on.
+- Reduced usage of error level logging.
+
+## [46] - 2025-09-18
+### Changed
+- Update alert references to latest locations to fix 404s and resolve redirections.
+
+## [45] - 2025-09-10
+### Changed
+- Add alert references to Content Cacheability scan rule alerts (Issue 7100).
 
 ## [44] - 2025-06-20
 ### Changed
@@ -367,6 +390,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - Updated to support new addon format
 
+[47]: https://github.com/zaproxy/zap-extensions/releases/pscanrulesBeta-v47
+[46]: https://github.com/zaproxy/zap-extensions/releases/pscanrulesBeta-v46
+[45]: https://github.com/zaproxy/zap-extensions/releases/pscanrulesBeta-v45
 [44]: https://github.com/zaproxy/zap-extensions/releases/pscanrulesBeta-v44
 [43]: https://github.com/zaproxy/zap-extensions/releases/pscanrulesBeta-v43
 [42]: https://github.com/zaproxy/zap-extensions/releases/pscanrulesBeta-v42

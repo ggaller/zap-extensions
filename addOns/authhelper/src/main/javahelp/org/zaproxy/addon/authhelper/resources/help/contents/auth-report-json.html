@@ -33,10 +33,26 @@
 			<td>Statistics</td>
 			<td>statistics</td>
 		</tr>
+		<tr>
+			<td>Domains</td>
+			<td>domains</td>
+		</tr>
+		<tr>
+			<td>Domains Partially Out of Scope</td>
+			<td>domainspartiallyoutofscope</td>
+		</tr>
+		<tr>
+			<td>Domains Out of Scope</td>
+			<td>domainsoutofscope</td>
+		</tr>
 
 		<tr>
 			<td>Diagnostics</td>
 			<td>diagnostics</td>
+		</tr>
+		<tr>
+			<td>Automation Framework Plan for Diagnostics</td>
+			<td>diagnosticsafplan</td>
 		</tr>
 		<tr>
 			<td>HTTP Messages for Diagnostics</td>
@@ -125,7 +141,7 @@
 		</tr>
 	</table>
 
-	<H4>Failure Details</H3>
+	<H4>Failure Details</H4>
 	The following failure detail items are used:
 
 	<table>
@@ -144,6 +160,10 @@
 		<tr>
 			<td>auth.failure.session_mgmt</td>
 			<td>Failed to identify session management.</td>
+		</tr>
+		<tr>
+			<td>auth.failure.logged_in</td>
+			<td>No indication found of being logged in.</td>
 		</tr>
 		<tr>
 			<td>auth.failure.login_failures</td>
@@ -177,12 +197,37 @@
 	For more details of what they mean see 
 	<a href="https://www.zaproxy.org/docs/internal-statistics/">https://www.zaproxy.org/docs/internal-statistics/</a>
 
+	<H3>Domains</H3>
+	This section contains an array with all the domains that were accessed while performing the authentication.
+<pre>
+	"domains": [
+		"https://www.example.org",
+		"https://api.example.org"
+	]
+</pre>
+
+	<H3>Domains Partially Out of Scope</H3>
+	This section contains an array with the domains partially out of scope, that were accessed while performing the authentication. For example, when the context includes just a subset of the target (e.g. <code>https://www.example.org/frontend/</code>) and other resources were also accessed (e.g. <code>https://www.example.org/backend/</code>).
+<pre>
+	"domainsPartiallyOutOfScope": [
+		"https://www.example.org"
+	]
+</pre>
+
+	<H3>Domains Out of Scope</H3>
+	This section contains an array with the domains out of scope (context), that were accessed while performing the authentication.
+<pre>
+	"domainsOutOfScope": [
+		"https://api.example.org"
+	]
+</pre>
+
 	<H3>Diagnostics</H3>
 	The <a href="browser-auth.html">Browser Based</a> and <a href="client-script.html">Client Script</a> authentication methods allow to record diagnostic data, which can be included in the Authentication Report, to help diagnose authentication problems.
 	<p>
 	Diagnostic data can also be recorded with the <a href="auth-tester.html">Authentication Tester Dialog</a>.
 	<p>
-	The report will contain an array of diagnostic objects, one for each recorded authentication attempt. The diagnostic objet has the authentication method used, the name of the context and user, and each step performed during the authentication.
+	The report will contain an array of diagnostic objects, one for each recorded authentication attempt. The diagnostic objet has the authentication method used, the name of the context and user, the script if Client Script Authentication, the Automation Framework plan, and each step performed during the authentication.
 <pre>
 	"diagnostics": [
 		{
@@ -190,6 +235,7 @@
 			"authenticationMethod": "Browser-based Authentication",
 			"context": "Context Name",
 			"user": "User Name",
+			"script": "Script used by Client Script Authentication",
 			"steps": [
 				{ … }
 			]
@@ -220,6 +266,19 @@
 </pre>
 	More data can be included in each step depending on the additional diagnostics sections enabled for the report.
 	<p>The selector can be of type <code>CSS</code> or <code>XPATH</code> with the value containing the respective selector.
+
+
+	<H4>Automation Framework Plan for Diagnostics</H4>
+	When this section is enabled the diagnostic object can, optionally, include the Automation Framework plan used during the authentication.
+<pre>
+	"diagnostics": [
+		{
+			…
+			"afPlan": "Content Automation Framework Plan",
+			…
+		}
+	]
+</pre>
 
 	<H4>HTTP Messages for Diagnostics</H4>
 	When this section is enabled the step can, optionally, include HTTP messages that were sent during the step. Each message contains the request/response headers and bodies.
@@ -334,11 +393,13 @@
 		{
 			"key": "stats.auth.browser.foundfields",
 			"scope": "site",
+			"site:" "https://www.example.org",
 			"value": 1
 		},
 		{
 			"key": "stats.auth.browser.passed",
 			"scope": "site",
+			"site:" "https://www.example.org",
 			"value": 1
 		},
 		{
@@ -379,11 +440,13 @@
 		{
 			"key": "stats.auth.sessiontoken.accesstoken",
 			"scope": "site",
+			"site:" "https://www.example.org",
 			"value": 9
 		},
 		{
 			"key": "stats.auth.sessiontoken.token",
 			"scope": "site",
+			"site:" "https://www.example.org",
 			"value": 6
 		},
 		{
@@ -394,11 +457,13 @@
 		{
 			"key": "stats.auth.state.loggedin",
 			"scope": "site",
+			"site:" "https://www.example.org",
 			"value": 2
 		},
 		{
 			"key": "stats.auth.success",
 			"scope": "site",
+			"site:" "https://www.example.org",
 			"value": 1
 		}
 	]

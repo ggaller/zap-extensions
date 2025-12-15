@@ -21,18 +21,29 @@
 			<td>Sequence Details</td>
 			<td>sequencedetails</td>
 		</tr>
+		<tr>
+			<td>Automation Framework State</td>
+			<td>afstate</td>
+		</tr>
 	</table>
 
 	<H3>Sample</H3>
-	<H4>About riskdesc</H4>
-	riskdesc - Is a combination identifier, showing Risk followed by
-	Confidence (in brackets). For example
-	<code>High (Medium)</code>
-	would indicate a High risk issue identified with Medium confidence.
+
 	<pre>
 {
     "@version": "Dev Build",
     "@generated": "Fri, 4 Feb 2022 13:04:51",
+    "created": "2022-02-04T13:04:51.236211400Z",
+	"insights":[
+		{
+			"level": "Info",
+			"reason": "Informational",
+			"site": "http://localhost:8080",
+			"key": "insight.code.2xx",
+			"description": "Percentage of responses with status code 2xx",
+			"statistic": "95"
+		}, ...
+	],
     "site":[
         {
             "@name": "http://localhost:8080",
@@ -52,6 +63,7 @@
                     "instances":[
                         {
                             "uri": "http://localhost:8080/bodgeit/search.jsp?q=%3C%2Ffont%3E%3CscrIpt%3Ealert%281%29%3B%3C%2FscRipt%3E%3Cfont%3E",
+                            "nodeName": "http://localhost:8080/bodgeit/search.jsp (q)",
                             "method": "GET",
                             "param": "q",
                             "attack": "&lt;/font&gt;&lt;scrIpt&gt;alert(1);&lt;/scRipt&gt;&lt;font&gt;",
@@ -64,6 +76,7 @@
                         },
                         {
                             "uri": "http://localhost:8080/bodgeit/contact.jsp",
+                            "nodeName": "http://localhost:8080/bodgeit/contact.jsp",
                             "method": "POST",
                             "param": "comments",
                             "attack": "&lt;/td&gt;&lt;scrIpt&gt;alert(1);&lt;/scRipt&gt;&lt;td&gt;",
@@ -76,6 +89,7 @@
                         }
                     ],                   
                     "count": "2", 
+                    "systemic": false, 
                     "solution": "&lt;p&gt;Phase: Architecture and Design&lt;/p&gt;&lt;p&gt;Use a vetted library or framework that does not ...&lt;/p&gt;",
                     "otherinfo": "",
                     "reference": "&lt;p&gt;http://projects.webappsec.org/Cross-Site-Scripting&lt;/p&gt;&lt;p&gt;http://cwe.mitre.org/data/definitions/79.html&lt;/p&gt;",
@@ -98,7 +112,21 @@
                     ]
                 },
                 ...
-            ],
+            ]
+        }
+    ]
+}
+</pre>
+
+	<h4>Statistics Section</h4>
+	The report can also include statistics, per site and global, for
+	example:
+	<pre>
+{
+    ...
+    "site":[
+        {
+            ...
             "statistics": {
                 "site.specific.stat.a": 1,
                 "site.specific.stat.b": 2
@@ -109,13 +137,16 @@
         "global.stat.a": 1,
         "global.stat.b": 2
     }
-
+}
 </pre>
 
+	<h4>Sequence Details Section</h4>
 	The report can also include details of Sequences and related active
 	scanning results, for example:
 
 	<pre>
+{
+    ...
     "sequences": [
       {
         "name": "Seq name",
@@ -170,8 +201,24 @@
         ]
       }
     ]
+}
 </pre>
 
+	<h4>Automation Framework State Section</h4>
+	The report can also include Automation Framework errors and warnings,
+	for example:
+
+	<pre>
+{
+    ...
+    "afPlanErrors": [
+        "AError A"
+    ],
+    "afPlanWarns": [
+        "Warning B"
+    ]
+}
+</pre>
 </BODY>
 </HTML>
 

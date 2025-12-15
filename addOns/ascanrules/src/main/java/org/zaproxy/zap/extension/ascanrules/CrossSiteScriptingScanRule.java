@@ -21,6 +21,7 @@ package org.zaproxy.zap.extension.ascanrules;
 
 import static org.zaproxy.zap.extension.ascanrules.utils.Constants.NULL_BYTE_CHARACTER;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,7 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.httpclient.URIException;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.parosproxy.paros.Constant;
@@ -67,6 +68,7 @@ public class CrossSiteScriptingScanRule extends AbstractAppParamPlugin
         alertTags.put(PolicyTag.DEV_CICD.getTag(), "");
         alertTags.put(PolicyTag.DEV_STD.getTag(), "");
         alertTags.put(PolicyTag.DEV_FULL.getTag(), "");
+        alertTags.put(PolicyTag.QA_CICD.getTag(), "");
         alertTags.put(PolicyTag.QA_STD.getTag(), "");
         alertTags.put(PolicyTag.QA_FULL.getTag(), "");
         alertTags.put(PolicyTag.SEQUENCE.getTag(), "");
@@ -257,8 +259,8 @@ public class CrossSiteScriptingScanRule extends AbstractAppParamPlugin
             // Not an error, just means we probably attacked the redirect
             // location
             return null;
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+        } catch (IOException e) {
+            LOGGER.debug(e.getMessage(), e);
         }
 
         if (isStop()) {
@@ -746,7 +748,7 @@ public class CrossSiteScriptingScanRule extends AbstractAppParamPlugin
                             .raise();
                 } else if (AlertThreshold.LOW.equals(this.getAlertThreshold())) {
                     HttpMessage ctx2Message = contexts.get(0).getMsg();
-                    if (StringUtils.containsIgnoreCase(
+                    if (Strings.CI.contains(
                             ctx.getMsg()
                                     .getResponseHeader()
                                     .getHeader(HttpFieldsNames.CONTENT_TYPE),
@@ -855,8 +857,9 @@ public class CrossSiteScriptingScanRule extends AbstractAppParamPlugin
         // In this case the parent effectively changes
         List<HtmlContext> context2 =
                 performAttack(msg, param, attackString1, context, HtmlContext.IGNORE_PARENT);
-        if (context2 == null) {
-            context2 = performAttack(msg, param, TAG_ONCLICK_ALERT, context, 0);
+
+        if (context2 == null || context2.isEmpty()) {
+            context2 = performAttack(msg, param, TAG_ONCLICK_ALERT, null, 0);
             if (context2 == null) {
                 return false;
             }
@@ -994,8 +997,8 @@ public class CrossSiteScriptingScanRule extends AbstractAppParamPlugin
                 attackHeader(msg, param, appendedValue ? value : "");
             }
 
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+        } catch (IOException e) {
+            LOGGER.debug(e.getMessage(), e);
         }
     }
 

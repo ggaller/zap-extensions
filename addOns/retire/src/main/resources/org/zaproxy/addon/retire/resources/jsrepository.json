@@ -118,10 +118,25 @@
         "info": [
           "http://blog.jquery.com/2016/01/08/jquery-2-2-and-1-12-released/",
           "http://research.insecurelabs.org/jquery/test/",
-          "https://bugs.jquery.com/ticket/11974",
           "https://github.com/advisories/GHSA-rmxg-73gg-4p98",
           "https://github.com/jquery/jquery/issues/2432",
           "https://nvd.nist.gov/vuln/detail/CVE-2015-9251"
+        ]
+      },
+      {
+        "atOrAbove": "1.8.0",
+        "below": "2.2.0",
+        "cwe": [
+          "CWE-79"
+        ],
+        "severity": "medium",
+        "identifiers": {
+          "summary": "parseHTML() executes scripts in event handlers",
+          "issue": "11974"
+        },
+        "info": [
+          "http://research.insecurelabs.org/jquery/test/",
+          "https://bugs.jquery.com/ticket/11974"
         ]
       },
       {
@@ -157,10 +172,25 @@
         "info": [
           "http://blog.jquery.com/2016/01/08/jquery-2-2-and-1-12-released/",
           "http://research.insecurelabs.org/jquery/test/",
-          "https://bugs.jquery.com/ticket/11974",
           "https://github.com/advisories/GHSA-rmxg-73gg-4p98",
           "https://github.com/jquery/jquery/issues/2432",
           "https://nvd.nist.gov/vuln/detail/CVE-2015-9251"
+        ]
+      },
+      {
+        "atOrAbove": "2.2.2",
+        "below": "3.0.0",
+        "cwe": [
+          "CWE-79"
+        ],
+        "severity": "medium",
+        "identifiers": {
+          "summary": "parseHTML() executes scripts in event handlers",
+          "issue": "11974"
+        },
+        "info": [
+          "http://research.insecurelabs.org/jquery/test/",
+          "https://bugs.jquery.com/ticket/11974"
         ]
       },
       {
@@ -1191,21 +1221,6 @@
         ]
       },
       {
-        "below": "4.9.7",
-        "severity": "high",
-        "cwe": [
-          "CWE-79"
-        ],
-        "identifiers": {
-          "summary": "TinyMCE before 4.9.7 and 5.x before 5.1.4 allows XSS in the core parser, the paste plugin, and the visualchars plugin by using the clipboard or APIs to insert content into the editor.",
-          "githubID": "GHSA-p7j5-4mwm-hv86"
-        },
-        "info": [
-          "https://github.com/advisories/GHSA-p7j5-4mwm-hv86",
-          "https://github.com/tinymce/tinymce/security/advisories/GHSA-p7j5-4mwm-hv86"
-        ]
-      },
-      {
         "below": "4.9.10",
         "severity": "medium",
         "cwe": [
@@ -1258,22 +1273,6 @@
         "info": [
           "https://github.com/advisories/GHSA-27gm-ghr9-4v95",
           "https://github.com/tinymce/tinymce/security/advisories/GHSA-27gm-ghr9-4v95"
-        ]
-      },
-      {
-        "atOrAbove": "5.0.0",
-        "below": "5.1.4",
-        "severity": "high",
-        "cwe": [
-          "CWE-79"
-        ],
-        "identifiers": {
-          "summary": "TinyMCE before 4.9.7 and 5.x before 5.1.4 allows XSS in the core parser, the paste plugin, and the visualchars plugin by using the clipboard or APIs to insert content into the editor.",
-          "githubID": "GHSA-p7j5-4mwm-hv86"
-        },
-        "info": [
-          "https://github.com/advisories/GHSA-p7j5-4mwm-hv86",
-          "https://github.com/tinymce/tinymce/security/advisories/GHSA-p7j5-4mwm-hv86"
         ]
       },
       {
@@ -3410,22 +3409,8 @@
         ]
       },
       {
-        "below": "1.999",
-        "severity": "low",
-        "cwe": [
-          "CWE-1104"
-        ],
-        "identifiers": {
-          "summary": "End-of-Life: Long term support for AngularJS has been discontinued as of December 31, 2021",
-          "retid": "54"
-        },
-        "info": [
-          "https://docs.angularjs.org/misc/version-support-status"
-        ]
-      },
-      {
         "atOrAbove": "1.7.0",
-        "below": "999",
+        "below": "1.8.8",
         "severity": "medium",
         "cwe": [
           "CWE-1333",
@@ -3441,6 +3426,64 @@
         "info": [
           "https://github.com/advisories/GHSA-m2h2-264f-f486"
         ]
+      },
+      {
+        "atOrAbove": "0",
+        "below": "1.9.8",
+        "cwe": [
+          "CWE-791"
+        ],
+        "severity": "medium",
+        "identifiers": {
+          "summary": "AngularJS Incomplete Filtering of Special Elements vulnerability",
+          "CVE": [
+            "CVE-2025-2336"
+          ],
+          "githubID": "GHSA-4p4w-6hg8-63wx"
+        },
+        "info": [
+          "https://github.com/advisories/GHSA-4p4w-6hg8-63wx",
+          "https://nvd.nist.gov/vuln/detail/CVE-2025-2336",
+          "https://codepen.io/herodevs/pen/bNGYaXx/412a3a4218387479898912f60c269c6c",
+          "https://github.com/angular/angular.js",
+          "https://www.herodevs.com/vulnerability-directory/cve-2025-2336"
+        ]
+      },
+      {
+        "atOrAbove": "0",
+        "below": "1.9.9",
+        "cwe": [
+          "CWE-1333"
+        ],
+        "severity": "medium",
+        "identifiers": {
+          "summary": "AngularJS Regular expression Denial of Service (ReDoS)",
+          "CVE": [
+            "CVE-2025-4690"
+          ],
+          "githubID": "GHSA-hfff-63hg-f47j"
+        },
+        "info": [
+          "https://github.com/advisories/GHSA-hfff-63hg-f47j",
+          "https://nvd.nist.gov/vuln/detail/CVE-2025-4690",
+          "https://codepen.io/herodevs/pen/RNNEPzP/751b91eab7730dff277523f3d50e4b77",
+          "https://github.com/angular/angular.js",
+          "https://www.herodevs.com/vulnerability-directory/cve-2025-4690"
+        ]
+      },
+      {
+        "below": "1.999",
+        "severity": "low",
+        "cwe": [
+          "CWE-1104"
+        ],
+        "identifiers": {
+          "summary": "End-of-Life: Long term support for AngularJS has been discontinued as of December 31, 2021",
+          "retid": "54"
+        },
+        "info": [
+          "https://docs.angularjs.org/misc/version-support-status"
+        ]
       }
     ],
     "extractors": {
@@ -3454,7 +3497,7 @@
         "angular(?:js)?-(§§version§§)(.min)?\\.js"
       ],
       "filecontent": [
-        "/\\*[\\*\\s]+(?:@license )?AngularJS v(§§version§§)",
+        "/\\*[\\*\\s]+(?:@license )?AngularJS(?: NES)? v(§§version§§)",
         "http://errors\\.angularjs\\.org/(§§version§§)/"
       ],
       "hashes": {}
@@ -5347,26 +5390,22 @@
         ]
       },
       {
-        "atOrAbove": "2.0.0",
+        "atOrAbove": "3.4.1",
         "below": "3.4.2",
+        "severity": "medium",
         "cwe": [
           "CWE-79"
         ],
-        "severity": "medium",
         "identifiers": {
-          "summary": "Bootstrap Cross-Site Scripting (XSS) vulnerability",
+          "summary": "Improper Neutralization of Input During Web Page Generation (XSS or 'Cross-site Scripting') vulnerability in Bootstrap allows Cross-Site Scripting (XSS). This issue affects Bootstrap version 3.4.1. At time of publication, there is no publicly available patched version.",
+          "githubID": "GHSA-q58r-hwc8-rm9j",
           "CVE": [
-            "CVE-2024-6484"
-          ],
-          "githubID": "GHSA-9mvj-f7w8-pvh2"
+            "CVE-2025-1647"
+          ]
         },
         "info": [
-          "https://github.com/advisories/GHSA-9mvj-f7w8-pvh2",
-          "https://nvd.nist.gov/vuln/detail/CVE-2024-6484",
-          "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/bootstrap-sass/CVE-2024-6484.yml",
-          "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/bootstrap/CVE-2024-6484.yml",
-          "https://github.com/twbs/bootstrap",
-          "https://www.herodevs.com/vulnerability-directory/cve-2024-6484"
+          "https://lists.debian.org/debian-lts-announce/2025/06/msg00001.html",
+          "https://www.herodevs.com/vulnerability-directory/cve-2025-1647"
         ]
       },
       {
@@ -5477,28 +5516,6 @@
         "info": [
           "https://github.com/advisories/GHSA-9v3m-8fp8-mj99",
           "https://github.com/twbs/bootstrap/issues/28236"
-        ]
-      },
-      {
-        "atOrAbove": "4.0.0",
-        "below": "5.0.0",
-        "cwe": [
-          "CWE-79"
-        ],
-        "severity": "medium",
-        "identifiers": {
-          "summary": "Bootstrap Cross-Site Scripting (XSS) vulnerability",
-          "CVE": [
-            "CVE-2024-6531"
-          ],
-          "githubID": "GHSA-vc8w-jr9v-vj7f"
-        },
-        "info": [
-          "https://github.com/advisories/GHSA-vc8w-jr9v-vj7f",
-          "https://nvd.nist.gov/vuln/detail/CVE-2024-6531",
-          "https://github.com/rubysec/ruby-advisory-db/blob/master/gems/bootstrap/CVE-2024-6531.yml",
-          "https://github.com/twbs/bootstrap",
-          "https://www.herodevs.com/vulnerability-directory/cve-2024-6531"
         ]
       }
     ],
@@ -5907,6 +5924,25 @@
           "https://nvd.nist.gov/vuln/detail/CVE-2024-45613",
           "https://github.com/ckeditor/ckeditor5",
           "https://github.com/ckeditor/ckeditor5/releases/tag/v43.1.1"
+        ]
+      },
+      {
+        "atOrAbove": "46.0.0",
+        "below": "46.0.3",
+        "severity": "low",
+        "cwe": [
+          "CWE-79"
+        ],
+        "identifiers": {
+          "summary": "### Impact\nA Cross-Site Scripting (XSS) vulnerability has been discovered in the CKEditor 5 clipboard package. This vulnerability could be triggered by a specific user action, leading to unauthorized JavaScript code execution, if the attacker managed to insert a malicious content into the editor, which might happen with a very specific editor configuration.\n\nThis vulnerability affects **only** installations where the editor configuration meets one of the following criteria:\n- [HTML embed plugin](https://ckeditor.com/docs/ckeditor5/latest/features/html/html-embed.html) is enabled\n- Custom plugin introducing editable element which implements view [`RawElement`](https://ckeditor.com/docs/ckeditor5/latest/api/module_engine_view_rawelement-ViewRawElement.html) is enabled\n\n### Patches\nThe problem has been recognized and patched. The fix will be available in version 46.0.3 (and above), and explicitly in version 45.2.2.\n\n### For more information\nEmail us at [security@cksource.com](mailto:security@cksource.com) if you have any questions or comments about this advisory.",
+          "githubID": "GHSA-x9gp-vjh6-3wv6",
+          "CVE": [
+            "CVE-2025-58064"
+          ]
+        },
+        "info": [
+          "https://github.com/ckeditor/ckeditor5/security/advisories/GHSA-x9gp-vjh6-3wv6",
+          "https://github.com/ckeditor/ckeditor5/commit/b210e90c6cf84e662ef6c7daf93a92355a961bf2"
         ]
       }
     ],
@@ -6384,6 +6420,27 @@
           "https://github.com/axios/axios",
           "https://github.com/axios/axios/releases/tag/v1.8.2"
         ]
+      },
+      {
+        "atOrAbove": "1.0.0",
+        "below": "1.12.0",
+        "severity": "high",
+        "cwe": [
+          "CWE-770"
+        ],
+        "identifiers": {
+          "summary": "## Summary\n\nWhen Axios runs on Node.js and is given a URL with the `data:` scheme, it does not perform HTTP. Instead, its Node http adapter decodes the entire payload into memory (`Buffer`/`Blob`) and returns a synthetic 200 response.\nThis path ignores `maxContentLength` / `maxBodyLength` (which only protect HTTP responses), so an attacker can supply a very large `data:` URI and cause the process to allocate unbounded memory and crash (DoS), even if the caller requested `responseType: 'stream'`.",
+          "githubID": "GHSA-4hjh-wcwx-xvwj",
+          "CVE": [
+            "CVE-2025-58754"
+          ]
+        },
+        "info": [
+          "https://github.com/axios/axios/security/advisories/GHSA-4hjh-wcwx-xvwj",
+          "https://github.com/axios/axios/pull/7011",
+          "https://github.com/axios/axios/commit/945435fc51467303768202250debb8d4ae892593",
+          "https://github.com/axios/axios/releases/tag/v1.12.0"
+        ]
       }
     ],
     "extractors": {
@@ -6819,6 +6876,7 @@
         ]
       },
       {
+        "atOrAbove": "0.9.9",
         "below": "9.3.2",
         "severity": "medium",
         "cwe": [
@@ -6987,7 +7045,8 @@
         "atOrAbove": "11.1.4",
         "below": "12.3.5",
         "cwe": [
-          "CWE-285"
+          "CWE-285",
+          "CWE-863"
         ],
         "severity": "high",
         "identifiers": {
@@ -7145,7 +7204,8 @@
         "atOrAbove": "13.0.0",
         "below": "13.5.9",
         "cwe": [
-          "CWE-285"
+          "CWE-285",
+          "CWE-863"
         ],
         "severity": "high",
         "identifiers": {
@@ -7265,7 +7325,8 @@
         "atOrAbove": "9.5.5",
         "below": "14.2.15",
         "cwe": [
-          "CWE-285"
+          "CWE-285",
+          "CWE-863"
         ],
         "severity": "high",
         "identifiers": {
@@ -7306,7 +7367,7 @@
         ]
       },
       {
-        "atOrAbove": "0",
+        "atOrAbove": "0.9.9",
         "below": "14.2.24",
         "cwe": [
           "CWE-362"
@@ -7331,7 +7392,8 @@
         "atOrAbove": "14.0.0",
         "below": "14.2.25",
         "cwe": [
-          "CWE-285"
+          "CWE-285",
+          "CWE-863"
         ],
         "severity": "high",
         "identifiers": {
@@ -7401,6 +7463,86 @@
         ]
       },
       {
+        "atOrAbove": "0.9.9",
+        "below": "14.2.31",
+        "severity": "medium",
+        "cwe": [
+          "CWE-524"
+        ],
+        "identifiers": {
+          "summary": "A vulnerability in Next.js Image Optimization has been fixed in v15.4.5 and v14.2.31. When images returned from API routes vary based on request headers (such as `Cookie` or `Authorization`), these responses could be incorrectly cached and served to unauthorized users due to a cache key confusion bug.\n\nAll users are encouraged to upgrade if they use API routes to serve images that depend on request headers and have image optimization enabled.\n\nMore details at [Vercel Changelog](https://vercel.com/changelog/cve-2025-57752)",
+          "githubID": "GHSA-g5qg-72qw-gw5v",
+          "CVE": [
+            "CVE-2025-57752"
+          ]
+        },
+        "info": [
+          "https://github.com/vercel/next.js/security/advisories/GHSA-g5qg-72qw-gw5v",
+          "https://github.com/vercel/next.js/pull/82114",
+          "https://github.com/vercel/next.js/commit/6b12c60c61ee80cb0443ccd20de82ca9b4422ddd",
+          "https://vercel.com/changelog/cve-2025-57752"
+        ]
+      },
+      {
+        "atOrAbove": "0.9.9",
+        "below": "14.2.31",
+        "severity": "medium",
+        "cwe": [
+          "CWE-20"
+        ],
+        "identifiers": {
+          "summary": "A vulnerability in **Next.js Image Optimization** has been fixed in **v15.4.5** and **v14.2.31**. The issue allowed attacker-controlled external image sources to trigger file downloads with arbitrary content and filenames under specific configurations. This behavior could be abused for phishing or malicious file delivery.\n\nAll users relying on `images.domains` or `images.remotePatterns` are encouraged to upgrade and verify that external image sources are strictly validated.\n\nMore details at [Vercel Changelog](https://vercel.com/changelog/cve-2025-55173)",
+          "githubID": "GHSA-xv57-4mr9-wg8v",
+          "CVE": [
+            "CVE-2025-55173"
+          ]
+        },
+        "info": [
+          "https://github.com/vercel/next.js/security/advisories/GHSA-xv57-4mr9-wg8v",
+          "https://github.com/vercel/next.js/commit/6b12c60c61ee80cb0443ccd20de82ca9b4422ddd",
+          "https://vercel.com/changelog/cve-2025-55173",
+          "http://vercel.com/changelog/cve-2025-55173"
+        ]
+      },
+      {
+        "atOrAbove": "0.9.9",
+        "below": "14.2.32",
+        "severity": "medium",
+        "cwe": [
+          "CWE-918"
+        ],
+        "identifiers": {
+          "summary": "A vulnerability in **Next.js Middleware** has been fixed in **v14.2.32** and **v15.4.7**. The issue occurred when request headers were directly passed into `NextResponse.next()`. In self-hosted applications, this could allow Server-Side Request Forgery (SSRF) if certain sensitive headers from the incoming request were reflected back into the response.\n\nAll users implementing custom middleware logic in self-hosted environments are strongly encouraged to upgrade and verify correct usage of the `next()` function.\n\nMore details at [Vercel Changelog](https://vercel.com/changelog/cve-2025-57822)",
+          "githubID": "GHSA-4342-x723-ch2f",
+          "CVE": [
+            "CVE-2025-57822"
+          ]
+        },
+        "info": [
+          "https://github.com/vercel/next.js/security/advisories/GHSA-4342-x723-ch2f",
+          "https://github.com/vercel/next.js/commit/9c9aaed5bb9338ef31b0517ccf0ab4414f2093d8",
+          "https://vercel.com/changelog/cve-2025-57822"
+        ]
+      },
+      {
+        "atOrAbove": "14.3.0-canary.77",
+        "below": "15.0.5",
+        "severity": "critical",
+        "cwe": [
+          "CWE-502"
+        ],
+        "identifiers": {
+          "summary": "A vulnerability affects certain React packages<sup>1</sup> for versions 19.0.0, 19.1.0, 19.1.1, and 19.2.0 and frameworks that use the affected packages, including Next.js 15.x and 16.x using the App Router. The issue is tracked upstream as [CVE-2025-55182](https://www.cve.org/CVERecord?id=CVE-2025-55182). \n\nFixed in:\nReact: 19.0.1, 19.1.2, 19.2.1\nNext.js: 15.0.5, 15.1.9, 15.2.6, 15.3.6, 15.4.8, 15.5.7, 16.0.7\n\nThe vulnerability also affects experimental canary releases starting with 14.3.0-canary.77. Users on any of the 14.3 canary builds should either downgrade to a 14.x stable release or 14.3.0-canary.76.\n\nAll users of stable 15.x or 16.x Next.js versions should upgrade to a patched, stable version immediately.\n\n<sup>1</sup> The affected React packages are:\n- react-server-dom-parcel\n- react-server-dom-turbopack\n- react-server-dom-webpack",
+          "githubID": "GHSA-9qr9-h5gf-34mp",
+          "CVE": [
+            "CVE-2025-66478"
+          ]
+        },
+        "info": [
+          "https://github.com/vercel/next.js/security/advisories/GHSA-9qr9-h5gf-34mp"
+        ]
+      },
+      {
         "atOrAbove": "15.0.0",
         "below": "15.1.2",
         "cwe": [
@@ -7419,28 +7561,6 @@
           "https://github.com/vercel/next.js/security/advisories/GHSA-7m27-7ghc-44w9",
           "https://nvd.nist.gov/vuln/detail/CVE-2024-56332",
           "https://github.com/vercel/next.js"
-        ]
-      },
-      {
-        "atOrAbove": "15.0.0",
-        "below": "15.1.6",
-        "cwe": [
-          "CWE-362"
-        ],
-        "severity": "low",
-        "identifiers": {
-          "summary": "Next.js Race Condition to Cache Poisoning",
-          "CVE": [
-            "CVE-2025-32421"
-          ],
-          "githubID": "GHSA-qpjv-v59x-3qc4"
-        },
-        "info": [
-          "https://github.com/advisories/GHSA-qpjv-v59x-3qc4",
-          "https://github.com/vercel/next.js/security/advisories/GHSA-qpjv-v59x-3qc4",
-          "https://nvd.nist.gov/vuln/detail/CVE-2025-32421",
-          "https://github.com/vercel/next.js",
-          "https://vercel.com/changelog/cve-2025-32421"
         ]
       },
       {
@@ -7491,7 +7611,8 @@
         "atOrAbove": "15.0.0",
         "below": "15.2.3",
         "cwe": [
-          "CWE-285"
+          "CWE-285",
+          "CWE-863"
         ],
         "severity": "high",
         "identifiers": {
@@ -8023,6 +8144,7 @@
         ]
       },
       {
+        "atOrAbove": "4.7.0",
         "below": "4.17.11",
         "cwe": [
           "CWE-400"
@@ -8104,6 +8226,42 @@
       {
         "below": "4.17.21",
         "cwe": [
+          "CWE-77",
+          "CWE-94"
+        ],
+        "severity": "high",
+        "identifiers": {
+          "summary": "Command Injection in lodash",
+          "CVE": [
+            "CVE-2021-23337"
+          ],
+          "githubID": "GHSA-35jh-r3h4-6jhm"
+        },
+        "info": [
+          "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
+          "https://nvd.nist.gov/vuln/detail/CVE-2021-23337",
+          "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
+          "https://cert-portal.siemens.com/productcert/pdf/ssa-637483.pdf",
+          "https://github.com/lodash/lodash",
+          "https://github.com/lodash/lodash/blob/ddfd9b11a0126db2302cb70ec9973b66baec0975/lodash.js#L14851",
+          "https://github.com/lodash/lodash/blob/ddfd9b11a0126db2302cb70ec9973b66baec0975/lodash.js%23L14851",
+          "https://security.netapp.com/advisory/ntap-20210312-0006/",
+          "https://snyk.io/vuln/SNYK-JAVA-ORGFUJIONWEBJARS-1074932",
+          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARS-1074930",
+          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWER-1074928",
+          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWERGITHUBLODASH-1074931",
+          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1074929",
+          "https://snyk.io/vuln/SNYK-JS-LODASH-1040724",
+          "https://www.oracle.com//security-alerts/cpujul2021.html",
+          "https://www.oracle.com/security-alerts/cpujan2022.html",
+          "https://www.oracle.com/security-alerts/cpujul2022.html",
+          "https://www.oracle.com/security-alerts/cpuoct2021.html"
+        ]
+      },
+      {
+        "atOrAbove": "4.0.0",
+        "below": "4.17.21",
+        "cwe": [
           "CWE-1333",
           "CWE-400"
         ],
@@ -8131,41 +8289,6 @@
           "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWERGITHUBLODASH-1074895",
           "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1074893",
           "https://snyk.io/vuln/SNYK-JS-LODASH-1018905",
-          "https://www.oracle.com//security-alerts/cpujul2021.html",
-          "https://www.oracle.com/security-alerts/cpujan2022.html",
-          "https://www.oracle.com/security-alerts/cpujul2022.html",
-          "https://www.oracle.com/security-alerts/cpuoct2021.html"
-        ]
-      },
-      {
-        "below": "4.17.21",
-        "cwe": [
-          "CWE-77",
-          "CWE-94"
-        ],
-        "severity": "high",
-        "identifiers": {
-          "summary": "Command Injection in lodash",
-          "CVE": [
-            "CVE-2021-23337"
-          ],
-          "githubID": "GHSA-35jh-r3h4-6jhm"
-        },
-        "info": [
-          "https://github.com/advisories/GHSA-35jh-r3h4-6jhm",
-          "https://nvd.nist.gov/vuln/detail/CVE-2021-23337",
-          "https://github.com/lodash/lodash/commit/3469357cff396a26c363f8c1b5a91dde28ba4b1c",
-          "https://cert-portal.siemens.com/productcert/pdf/ssa-637483.pdf",
-          "https://github.com/lodash/lodash",
-          "https://github.com/lodash/lodash/blob/ddfd9b11a0126db2302cb70ec9973b66baec0975/lodash.js#L14851",
-          "https://github.com/lodash/lodash/blob/ddfd9b11a0126db2302cb70ec9973b66baec0975/lodash.js%23L14851",
-          "https://security.netapp.com/advisory/ntap-20210312-0006/",
-          "https://snyk.io/vuln/SNYK-JAVA-ORGFUJIONWEBJARS-1074932",
-          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARS-1074930",
-          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWER-1074928",
-          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSBOWERGITHUBLODASH-1074931",
-          "https://snyk.io/vuln/SNYK-JAVA-ORGWEBJARSNPM-1074929",
-          "https://snyk.io/vuln/SNYK-JS-LODASH-1040724",
           "https://www.oracle.com//security-alerts/cpujul2021.html",
           "https://www.oracle.com/security-alerts/cpujan2022.html",
           "https://www.oracle.com/security-alerts/cpujul2022.html",
@@ -8305,7 +8428,7 @@
         ]
       },
       {
-        "atOrAbove": "0",
+        "atOrAbove": "0.7.30",
         "below": "0.7.33",
         "cwe": [
           "CWE-1333",

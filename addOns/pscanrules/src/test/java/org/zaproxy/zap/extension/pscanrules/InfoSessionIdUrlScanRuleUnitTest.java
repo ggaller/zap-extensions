@@ -81,7 +81,7 @@ class InfoSessionIdUrlScanRuleUnitTest extends PassiveScannerTest<InfoSessionIdU
         // Given / When
         Map<String, String> tags = rule.getAlertTags();
         // Then
-        assertThat(tags.size(), is(equalTo(6)));
+        assertThat(tags.size(), is(equalTo(7)));
         assertThat(
                 tags.containsKey(CommonAlertTag.OWASP_2021_A01_BROKEN_AC.getTag()),
                 is(equalTo(true)));
@@ -103,6 +103,9 @@ class InfoSessionIdUrlScanRuleUnitTest extends PassiveScannerTest<InfoSessionIdU
         assertThat(
                 tags.get(CommonAlertTag.WSTG_V42_SESS_04_SESS_EXPOSED.getTag()),
                 is(equalTo(CommonAlertTag.WSTG_V42_SESS_04_SESS_EXPOSED.getValue())));
+        assertThat(
+                tags.get(CommonAlertTag.SYSTEMIC.getTag()),
+                is(equalTo(CommonAlertTag.SYSTEMIC.getValue())));
     }
 
     @Test
@@ -134,12 +137,6 @@ class InfoSessionIdUrlScanRuleUnitTest extends PassiveScannerTest<InfoSessionIdU
         assertThat(alert3.getEvidence(), is(equalTo("www.example.org")));
         assertThat(alert1.getCweId(), is(equalTo(598)));
         assertThat(alert3.getAlertRef(), is(equalTo(rule.getPluginId() + "-3")));
-    }
-
-    @Test
-    @Override
-    public void shouldHaveValidReferences() {
-        super.shouldHaveValidReferences();
     }
 
     @Test

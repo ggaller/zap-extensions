@@ -4,7 +4,42 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Added
+- The following scan rules were added, having been promoted from Beta:
+  - In Page Banner Information Leak
+  - Java Serialization Object
+  - Sub Resource Integrity Attribute Missing
 
+### Changed
+- Update minimum ZAP version to 2.17.0.
+- Address redirection in a reference.
+- Update dependency.
+
+## [69] - 2025-11-04
+### Changed
+- Update dependency.
+- Reduced usage of error level logging.
+- The Charset Mismatch scan rule now includes example alert functionality for documentation generation purposes (Issue 6119) and alert references (Issue 7100).
+
+### Removed
+- The Charset Mismatch scan rule no longer produces an alert with regard to META content-type and older clients.
+
+## [68] - 2025-10-21
+### Added
+- SYSTEMIC tag to selected rules.
+
+### Changed
+- Update dependency.
+- The PII Disclosure scan rule now only evaluates visible text and script blocks in HTML responses at Medium or High alert threshold, while the entire response body is considered at Low alert threshold. To further prevent false positives at Medium or High alert threshold candidate strings with underscore are excluded.
+- Depends on an updated version of the Common Library add-on.
+
+### Fixed
+- ZAP is Out of Date rule to not trigger a CFU request in silent mode (Issue 9096).
+
+## [67] - 2025-09-18
+### Changed
+- Add alert references to HTTP Server Response Header scan rule alerts (Issue 7100, 9050).
+- Update alert references to latest locations to fix 404s and resolve redirections.
 
 ## [66] - 2025-07-25
 ### Added
@@ -623,6 +658,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 
 
+[69]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v69
+[68]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v68
+[67]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v67
 [66]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v66
 [65]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v65
 [64]: https://github.com/zaproxy/zap-extensions/releases/pscanrules-v64

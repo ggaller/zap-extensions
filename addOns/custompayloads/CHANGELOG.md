@@ -4,7 +4,12 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Changed
+- Update minimum ZAP version to 2.17.0.
 
+## [0.15.0] - 2025-09-02
+### Added
+- Added support for adding payloads which are disabled by default.
 
 ## [0.14.0] - 2025-01-15
 ### Changed
@@ -63,6 +68,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - First version.
 
+[0.15.0]: https://github.com/zaproxy/zap-extensions/releases/custompayloads-v0.15.0
 [0.14.0]: https://github.com/zaproxy/zap-extensions/releases/custompayloads-v0.14.0
 [0.13.0]: https://github.com/zaproxy/zap-extensions/releases/custompayloads-v0.13.0
 [0.12.0]: https://github.com/zaproxy/zap-extensions/releases/custompayloads-v0.12.0

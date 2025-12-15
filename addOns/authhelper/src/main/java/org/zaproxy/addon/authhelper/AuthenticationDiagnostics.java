@@ -21,8 +21,11 @@ package org.zaproxy.addon.authhelper;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Supplier;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
@@ -52,6 +55,7 @@ import org.zaproxy.addon.authhelper.internal.db.DiagnosticWebElement;
 import org.zaproxy.addon.authhelper.internal.db.DiagnosticWebElement.SelectorType;
 import org.zaproxy.addon.authhelper.internal.db.TableJdo;
 import org.zaproxy.zap.extension.zest.ZestZapUtils;
+import org.zaproxy.zap.model.Context;
 import org.zaproxy.zap.network.HttpSenderListener;
 import org.zaproxy.zest.core.v1.ZestClientElement;
 import org.zaproxy.zest.core.v1.ZestClientElementClear;
@@ -66,6 +70,12 @@ import org.zaproxy.zest.core.v1.ZestStatement;
 public class AuthenticationDiagnostics implements AutoCloseable {
 
     private static final Logger LOGGER = LogManager.getLogger(AuthenticationDiagnostics.class);
+
+    private static final List<DiagnosticDataProvider> diagnosticDataProviders =
+            Collections.synchronizedList(new ArrayList<>());
+
+    private static final List<MessageAccessedConsumer> messageAccessedConsumers =
+            Collections.synchronizedList(new ArrayList<>());
 
     private static final String ELEMENT_SELECTOR_SCRIPT =
             """
@@ -181,6 +191,8 @@ function getSelector(element, documentElement) {
 return getSelector(arguments[0], document)
 """;
 
+    private final HttpSenderListener messageAccessedListener;
+
     private final boolean enabled;
 
     private Diagnostic diagnostic;
@@ -200,6 +212,32 @@ return getSelector(arguments[0], document)
             String user,
             String script) {
         this.enabled = enabled;
+
+        messageAccessedListener =
+                new HttpSenderListener() {
+
+                    private Context ctx = Model.getSingleton().getSession().getContext(context);
+
+                    @Override
+                    public void onHttpResponseReceive(
+                            HttpMessage msg, int initiator, HttpSender sender) {
+                        // Nothing to do.
+
+                    }
+
+                    @Override
+                    public void onHttpRequestSend(
+                            HttpMessage msg, int initiator, HttpSender sender) {
+                        messageAccessedConsumers.forEach(e -> e.messageAccessed(ctx, msg));
+                    }
+
+                    @Override
+                    public int getListenerOrder() {
+                        return 0;
+                    }
+                };
+        HttpSender.addListener(messageAccessedListener);
+
         if (!enabled) {
             return;
         }
@@ -371,25 +409,30 @@ return getSelector(arguments[0], document)
     }
 
     private void processStorage(JavascriptExecutor je, DiagnosticBrowserStorageItem.Type type) {
-        @SuppressWarnings("unchecked")
-        List<Map<String, String>> storage =
-                (List<Map<String, String>>) je.executeScript(type.getScript());
-        if (storage == null || storage.isEmpty()) {
-            return;
-        }
+        try {
+            @SuppressWarnings("unchecked")
+            List<Map<String, String>> storage =
+                    (List<Map<String, String>>) je.executeScript(type.getScript());
+            if (storage == null || storage.isEmpty()) {
+                return;
+            }
 
-        storage.stream()
-                .map(
-                        e -> {
-                            DiagnosticBrowserStorageItem item = new DiagnosticBrowserStorageItem();
-                            item.setCreateTimestamp(Instant.now());
-                            item.setStep(currentStep);
-                            item.setType(type);
-                            item.setKey(e.get("key"));
-                            item.setValue(e.get("value"));
-                            return item;
-                        })
-                .forEach(currentStep.getBrowserStorageItems()::add);
+            storage.stream()
+                    .map(
+                            e -> {
+                                DiagnosticBrowserStorageItem item =
+                                        new DiagnosticBrowserStorageItem();
+                                item.setCreateTimestamp(Instant.now());
+                                item.setStep(currentStep);
+                                item.setType(type);
+                                item.setKey(e.get("key"));
+                                item.setValue(e.get("value"));
+                                return item;
+                            })
+                    .forEach(currentStep.getBrowserStorageItems()::add);
+        } catch (WebDriverException e) {
+            LOGGER.debug("Failed to process the storage:", e);
+        }
     }
 
     private DiagnosticWebElement createDiagnosticWebElement(
@@ -422,10 +465,10 @@ return getSelector(arguments[0], document)
             }
 
             diagElement.setTagName(element.getTagName());
-            diagElement.setAttributeType(getAttribute(element, "type"));
-            diagElement.setAttributeId(getAttribute(element, "id"));
-            diagElement.setAttributeName(getAttribute(element, "name"));
-            diagElement.setAttributeValue(getAttribute(element, "value"));
+            diagElement.setAttributeType(element.getAttribute("type"));
+            diagElement.setAttributeId(element.getAttribute("id"));
+            diagElement.setAttributeName(element.getAttribute("name"));
+            diagElement.setAttributeValue(element.getAttribute("value"));
             diagElement.setText(element.getText());
             diagElement.setDisplayed(element.isDisplayed());
             diagElement.setEnabled(element.isEnabled());
@@ -444,6 +487,32 @@ return getSelector(arguments[0], document)
         createStep();
     }
 
+    public void recordErrorStep(WebDriver webDriver) {
+        if (!enabled) {
+            return;
+        }
+
+        try {
+            String description =
+                    Constant.messages.getString("authhelper.auth.method.diags.steps.error");
+            if (webDriver == null) {
+                recordStep(description);
+            } else {
+                recordStep(webDriver, description);
+            }
+        } catch (Exception e) {
+            LOGGER.warn("An error occurred while recording the error step:", e);
+        }
+    }
+
+    public void reportFlowException(Exception cause) {
+        if (!enabled) {
+            return;
+        }
+
+        LOGGER.info("Exception during steps:", cause);
+    }
+
     public void recordStep(String description) {
         if (!enabled) {
             return;
@@ -459,21 +528,24 @@ return getSelector(arguments[0], document)
         finishCurrentStep(message.getRequestHeader().getURI().toString(), description);
     }
 
-    private static String getAttribute(WebElement element, String name) {
-        String value = element.getDomAttribute(name);
-        if (value != null) {
-            return value;
-        }
-        return element.getDomProperty(name);
-    }
-
     @Override
     public void close() {
+        HttpSender.removeListener(messageAccessedListener);
+
         if (!enabled) {
             return;
         }
 
         HttpSender.removeListener(listener);
+
+        diagnosticDataProviders.forEach(
+                provider -> {
+                    try {
+                        provider.addDiagnostics(diagnostic);
+                    } catch (Exception e) {
+                        LOGGER.error("An error occurred calling a data provider:", e);
+                    }
+                });
 
         PersistenceManager pm = TableJdo.getPmf().getPersistenceManager();
         Transaction tx = pm.currentTransaction();
@@ -534,5 +606,35 @@ return getSelector(arguments[0], document)
                         }
                     });
         }
+    }
+
+    public static void addMessageAccessedConsumer(MessageAccessedConsumer consumer) {
+        Objects.requireNonNull(consumer);
+        messageAccessedConsumers.add(consumer);
+    }
+
+    public static void removeMessageAccessedConsumer(MessageAccessedConsumer consumer) {
+        Objects.requireNonNull(consumer);
+        messageAccessedConsumers.remove(consumer);
+    }
+
+    public interface MessageAccessedConsumer {
+
+        void messageAccessed(Context ctx, HttpMessage message);
+    }
+
+    public static void addDiagnosticDataProvider(DiagnosticDataProvider provider) {
+        Objects.requireNonNull(provider);
+        diagnosticDataProviders.add(provider);
+    }
+
+    public static void removeDiagnosticDataProvider(DiagnosticDataProvider provider) {
+        Objects.requireNonNull(provider);
+        diagnosticDataProviders.remove(provider);
+    }
+
+    public interface DiagnosticDataProvider {
+
+        void addDiagnostics(Diagnostic diagnostic);
     }
 }

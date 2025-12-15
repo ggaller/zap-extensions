@@ -65,7 +65,7 @@ class ContentSecurityPolicyScanRuleUnitTest
         // Given / When
         Map<String, String> tags = rule.getAlertTags();
         // Then
-        assertThat(tags.size(), is(equalTo(5)));
+        assertThat(tags.size(), is(equalTo(6)));
         assertThat(
                 tags.containsKey(CommonAlertTag.OWASP_2021_A05_SEC_MISCONFIG.getTag()),
                 is(equalTo(true)));
@@ -81,6 +81,9 @@ class ContentSecurityPolicyScanRuleUnitTest
         assertThat(
                 tags.get(CommonAlertTag.OWASP_2017_A06_SEC_MISCONFIG.getTag()),
                 is(equalTo(CommonAlertTag.OWASP_2017_A06_SEC_MISCONFIG.getValue())));
+        assertThat(
+                tags.get(CommonAlertTag.SYSTEMIC.getTag()),
+                is(equalTo(CommonAlertTag.SYSTEMIC.getValue())));
     }
 
     @Test
@@ -104,12 +107,6 @@ class ContentSecurityPolicyScanRuleUnitTest
         assertThat(countInfos, is(equalTo(1L)));
         assertThat(countLows, is(equalTo(3L)));
         assertThat(countMediums, is(equalTo(9L)));
-    }
-
-    @Test
-    @Override
-    public void shouldHaveValidReferences() {
-        super.shouldHaveValidReferences();
     }
 
     @Test

@@ -4,7 +4,31 @@ All notable changes to this add-on will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## Unreleased
+### Added
+- A help page for the tech-detection (`wappalyzer`) automation framework job.
 
+### Changed
+- Update minimum ZAP version to 2.17.0.
+
+## [21.50.0] - 2025-12-03
+### Changed
+- Updated with enthec upstream icon and pattern changes.
+
+## [21.49.0] - 2025-11-04
+### Changed
+- Updated with enthec upstream icon and pattern changes.
+- Maintenance changes.
+- The Technology panel toolbar now includes a toggle button to link its displayed contents to the Sites Tree selection.
+
+### Fixed
+- Icon sizing in the Technology table when a transparent placeholder needs to be used.
+- Reduced usage of error level logging.
+
+## [21.48.0] - 2025-09-02
+### Changed
+- Updated with enthec upstream icon and pattern changes.
+- During load the time taken to process the data files will be shown in human readable format (generally seconds), as well as milliseconds (ms).
+- Maintenance changes.
 
 ## [21.47.0] - 2025-07-15
 ### Changed
@@ -420,6 +444,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - First version
 
 
+[21.50.0]: https://github.com/zaproxy/zap-extensions/releases/wappalyzer-v21.50.0
+[21.49.0]: https://github.com/zaproxy/zap-extensions/releases/wappalyzer-v21.49.0
+[21.48.0]: https://github.com/zaproxy/zap-extensions/releases/wappalyzer-v21.48.0
 [21.47.0]: https://github.com/zaproxy/zap-extensions/releases/wappalyzer-v21.47.0
 [21.46.0]: https://github.com/zaproxy/zap-extensions/releases/wappalyzer-v21.46.0
 [21.45.0]: https://github.com/zaproxy/zap-extensions/releases/wappalyzer-v21.45.0

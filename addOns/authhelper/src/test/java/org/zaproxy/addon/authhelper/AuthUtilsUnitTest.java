@@ -27,12 +27,13 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import fi.iki.elonen.NanoHTTPD;
 import fi.iki.elonen.NanoHTTPD.IHTTPSession;
@@ -93,6 +94,10 @@ import org.zaproxy.zap.testutils.NanoServerHandler;
 import org.zaproxy.zap.testutils.TestUtils;
 import org.zaproxy.zap.users.User;
 import org.zaproxy.zap.utils.Pair;
+import org.zaproxy.zest.core.v1.ZestActionSleep;
+import org.zaproxy.zest.core.v1.ZestClientElementClick;
+import org.zaproxy.zest.core.v1.ZestClientLaunch;
+import org.zaproxy.zest.core.v1.ZestScript;
 
 class AuthUtilsUnitTest extends TestUtils {
 
@@ -101,6 +106,7 @@ class AuthUtilsUnitTest extends TestUtils {
         setUpZap();
 
         mockMessages(new ExtensionAuthhelper());
+        AuthUtils.setHistoryProvider(new TestHistoryProvider());
     }
 
     @AfterEach
@@ -983,6 +989,31 @@ class AuthUtilsUnitTest extends TestUtils {
         assertThat(res, is(equalTo(Boolean.parseBoolean(result))));
     }
 
+    @Test
+    void shouldSetMinWaitFor() {
+        // Given
+        ZestScript zs = new ZestScript();
+        ZestClientElementClick el1 = new ZestClientElementClick();
+        ZestClientElementClick el2 = new ZestClientElementClick();
+        ZestClientElementClick el3 = new ZestClientElementClick();
+        el1.setWaitForMsec(1000);
+        el2.setWaitForMsec(5000);
+        el3.setWaitForMsec(8000);
+        zs.add(new ZestClientLaunch());
+        zs.add(el1);
+        zs.add(el2);
+        zs.add(el3);
+        zs.add(new ZestActionSleep());
+
+        // When
+        AuthUtils.setMinWaitFor(zs, 5000);
+
+        // Then
+        assertThat(el1.getWaitForMsec(), is(equalTo(5000)));
+        assertThat(el2.getWaitForMsec(), is(equalTo(5000)));
+        assertThat(el3.getWaitForMsec(), is(equalTo(8000)));
+    }
+
     static class BrowserTest extends TestUtils {
 
         private static final String HTML_SHADOM_DOM =
@@ -1008,6 +1039,21 @@ class AuthUtilsUnitTest extends TestUtils {
                     </script>
                 """;
 
+        private static final String FORM_SUBMIT_TIMEOUT =
+                """
+                    <script>
+                        function remove() {
+                            setTimeout(() => {
+                              document.getElementsByTagName("input")[0].remove();
+                            }, 1000);
+                        }
+                    </script>
+                    <form action="javascript:remove()">
+                        <input type="password" />
+                    </form>
+                    <button />
+                """;
+
         @RegisterExtension static SeleniumJupiter seleniumJupiter = new SeleniumJupiter();
 
         private String url;
@@ -1023,6 +1069,8 @@ class AuthUtilsUnitTest extends TestUtils {
                             new String[] {"-headless"},
                             new String[] {"remote.active-protocols=1"},
                             Map.of("webSocketUrl", true)));
+
+            mockMessages(new ExtensionAuthhelper());
         }
 
         @BeforeEach
@@ -1165,6 +1213,63 @@ class AuthUtilsUnitTest extends TestUtils {
         }
 
         @TestTemplate
+        void shouldReturnPasswordFieldWithPasswordInName(WebDriver wd) {
+            // Given
+            pageContent =
+                    () ->
+                            """
+                                <input type="text" name="IsPasswordField" />
+                            """;
+            wd.get(url);
+            List<WebElement> inputElements = AuthUtils.getInputElements(wd, false);
+
+            // When
+            WebElement field = AuthUtils.getPasswordField(inputElements);
+
+            // Then
+            assertThat(field, is(notNullValue()));
+        }
+
+        @TestTemplate
+        void shouldReturnPasswordFieldWithPasswordInId(WebDriver wd) {
+            // Given
+            pageContent =
+                    () ->
+                            """
+                                <input type="text" id="IsPasswordField" />
+                            """;
+            wd.get(url);
+            List<WebElement> inputElements = AuthUtils.getInputElements(wd, false);
+
+            // When
+            WebElement field = AuthUtils.getPasswordField(inputElements);
+
+            // Then
+            assertThat(field, is(notNullValue()));
+        }
+
+        @TestTemplate
+        void shouldReturnPasswordFieldByTypeOverIdAndName(WebDriver wd) {
+            // Given
+            pageContent =
+                    () ->
+                            """
+                                <input type="text" name="IsPasswordField" />
+                                <input type="text" id="IsPasswordField" />
+                                <input type="password" />
+                            """;
+            wd.get(url);
+            List<WebElement> inputElements = AuthUtils.getInputElements(wd, false);
+
+            // When
+            WebElement field = AuthUtils.getPasswordField(inputElements);
+
+            // Then
+            assertThat(field, is(notNullValue()));
+            assertThat(field.getDomProperty("type"), is(equalTo("password")));
+        }
+
+        @TestTemplate
         void shouldReturnInputElementsUnderShadowDom(WebDriver wd) {
             // Given
             pageContent = () -> HTML_SHADOM_DOM;
@@ -1194,6 +1299,89 @@ class AuthUtilsUnitTest extends TestUtils {
             assertThat(inputElements, hasSize(2));
             assertId(inputElements.get(0), "host-input-a");
             assertId(inputElements.get(1), "host-input-b");
+        }
+
+        @TestTemplate
+        void shouldReturnOnFieldOnSubmit(WebDriver wd) {
+            // Given
+            pageContent =
+                    () ->
+                            """
+                                <input type="password" />
+                            """;
+            wd.get(url);
+            WebElement passwordField = wd.findElement(By.tagName("input"));
+            AuthenticationDiagnostics diags = mock();
+
+            // When
+            AuthUtils.submit(diags, wd, passwordField, 0, 0);
+
+            // Then
+            verify(diags).recordStep(wd, "Auto Return");
+            verifyNoMoreInteractions(diags);
+        }
+
+        @TestTemplate
+        void shouldClickButtonIfReturnDoesNoActionOnFieldOnSubmit(WebDriver wd) {
+            // Given
+            pageContent = () -> FORM_SUBMIT_TIMEOUT;
+            wd.get(url);
+            WebElement passwordField = wd.findElement(By.tagName("input"));
+            AuthenticationDiagnostics diags = mock();
+
+            // When
+            AuthUtils.submit(diags, wd, passwordField, 0, 0);
+
+            // Then
+            WebElement button = wd.findElement(By.tagName("button"));
+            verify(diags).recordStep(wd, "Auto Return");
+            verify(diags).recordStep(wd, "Click Button", button);
+            verifyNoMoreInteractions(diags);
+        }
+
+        @TestTemplate
+        void shouldClickLoginLikeButtonWhenMoreThanOneIfReturnDoesNoActionOnFieldOnSubmit(
+                WebDriver wd) {
+            // Given
+            pageContent =
+                    () ->
+                            """
+                                <input type="password" />
+                                <button>
+                                    <span>Show Password</span>
+                                </button>
+                                <button id="x">
+                                    <span>Login</span>
+                                </button>
+                            """;
+            wd.get(url);
+            WebElement passwordField = wd.findElement(By.tagName("input"));
+            AuthenticationDiagnostics diags = mock();
+
+            // When
+            AuthUtils.submit(diags, wd, passwordField, 0, 0);
+
+            // Then
+            WebElement button = wd.findElement(By.id("x"));
+            verify(diags).recordStep(wd, "Auto Return");
+            verify(diags).recordStep(wd, "Click Button", button);
+            verifyNoMoreInteractions(diags);
+        }
+
+        @TestTemplate
+        void shouldNotClickButtonIfReturnActionWorksUnderPageLoadWaitOnSubmit(WebDriver wd) {
+            // Given
+            pageContent = () -> FORM_SUBMIT_TIMEOUT;
+            wd.get(url);
+            WebElement passwordField = wd.findElement(By.tagName("input"));
+            AuthenticationDiagnostics diags = mock();
+
+            // When
+            AuthUtils.submit(diags, wd, passwordField, 0, 2);
+
+            // Then
+            verify(diags).recordStep(wd, "Auto Return");
+            verifyNoMoreInteractions(diags);
         }
 
         private static void assertId(WebElement element, String id) {

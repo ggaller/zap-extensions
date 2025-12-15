@@ -282,7 +282,7 @@ class ContentSecurityPolicyMissingScanRuleUnitTest
         // Given / When
         Map<String, String> tags = rule.getAlertTags();
         // Then
-        assertThat(tags.size(), is(equalTo(4)));
+        assertThat(tags.size(), is(equalTo(5)));
         assertThat(
                 tags.containsKey(CommonAlertTag.OWASP_2021_A05_SEC_MISCONFIG.getTag()),
                 is(equalTo(true)));
@@ -297,6 +297,9 @@ class ContentSecurityPolicyMissingScanRuleUnitTest
         assertThat(
                 tags.get(CommonAlertTag.OWASP_2017_A06_SEC_MISCONFIG.getTag()),
                 is(equalTo(CommonAlertTag.OWASP_2017_A06_SEC_MISCONFIG.getValue())));
+        assertThat(
+                tags.get(CommonAlertTag.SYSTEMIC.getTag()),
+                is(equalTo(CommonAlertTag.SYSTEMIC.getValue())));
     }
 
     @Test
@@ -309,12 +312,6 @@ class ContentSecurityPolicyMissingScanRuleUnitTest
         assertCSPAlertAttributes(alerts.get(0), "", Alert.RISK_MEDIUM, "10038-1");
         assertCSPAlertAttributes(alerts.get(1), "obs.", Alert.RISK_INFO, "10038-2");
         assertCSPAlertAttributes(alerts.get(2), "ro.", Alert.RISK_INFO, "10038-3");
-    }
-
-    @Test
-    @Override
-    public void shouldHaveValidReferences() {
-        super.shouldHaveValidReferences();
     }
 
     private void assertContentSecurityPolicyAlertRaised() {

@@ -20,7 +20,8 @@
 package org.zaproxy.zap.extension.wappalyzer;
 
 import com.github.weisj.jsvg.SVGDocument;
-import com.github.weisj.jsvg.attributes.paint.SVGPaint;
+import com.github.weisj.jsvg.parser.DocumentLimits;
+import com.github.weisj.jsvg.parser.LoaderContext;
 import com.github.weisj.jsvg.parser.SVGLoader;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -45,6 +46,7 @@ import java.util.regex.PatternSyntaxException;
 import javax.swing.ImageIcon;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang3.time.DurationFormatUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jsoup.select.QueryParser;
@@ -56,7 +58,7 @@ public class TechsJsonParser {
     private static final String FIELD_CONFIDENCE = "confidence:";
     private static final String FIELD_VERSION = "version:";
     private static final String FIELD_SEPARATOR = "\\\\;";
-    private static final int SIZE = 16;
+    static final int SIZE = 16;
 
     private static final Logger LOGGER = LogManager.getLogger(TechsJsonParser.class);
     private final PatternErrorHandler patternErrorHandler;
@@ -64,8 +66,8 @@ public class TechsJsonParser {
 
     public TechsJsonParser() {
         this(
-                (pattern, e) -> LOGGER.error("Invalid pattern syntax {}", pattern, e),
-                e -> LOGGER.error(e.getMessage(), e));
+                (pattern, e) -> LOGGER.warn("Invalid pattern syntax {}", pattern, e),
+                e -> LOGGER.warn(e.getMessage(), e));
     }
 
     TechsJsonParser(PatternErrorHandler peh, ParsingExceptionHandler parsingExceptionHandler) {
@@ -75,11 +77,6 @@ public class TechsJsonParser {
 
     TechData parse(String categories, List<String> technologies, boolean createIcons) {
         LOGGER.info("Starting to parse Tech Detection technologies.");
-        if (createIcons) {
-            // Access the SVGPaint class to hopefully address class contention when parallel loading
-            // below. Issue 8464
-            SVGPaint.DEFAULT_PAINT.paint();
-        }
         Instant start = Instant.now();
         TechData techData = new TechData();
         parseCategories(techData, getStringResource(categories));
@@ -103,11 +100,12 @@ public class TechsJsonParser {
         // Note: Based on testing having the forEach separate performs faster than chaining it
         futures.forEach(CompletableFuture::join);
         executor.shutdown();
-        Instant finish = Instant.now();
+        long loadTime = Duration.between(start, Instant.now()).toMillis();
         LOGGER.info(
-                "Loaded {} Tech Detection technologies, in {}ms",
+                "Loaded {} Tech Detection technologies, in {} ({}ms)",
                 techData.getApplications().size(),
-                Duration.between(start, finish).toMillis());
+                DurationFormatUtils.formatDurationWords(loadTime, true, true),
+                loadTime);
         return techData;
     }
 
@@ -233,7 +231,16 @@ public class TechsJsonParser {
             return null;
         }
         SVGLoader loader = new SVGLoader();
-        SVGDocument svgDocument = loader.load(url);
+        SVGDocument svgDocument =
+                loader.load(
+                        url,
+                        LoaderContext.builder()
+                                .documentLimits(
+                                        new DocumentLimits(
+                                                DocumentLimits.DEFAULT_MAX_NESTING_DEPTH,
+                                                DocumentLimits.DEFAULT_MAX_USE_NESTING_DEPTH,
+                                                8000))
+                                .build());
         BufferedImage image = new BufferedImage(SIZE, SIZE, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = image.createGraphics();
         try {
@@ -295,7 +302,7 @@ public class TechsJsonParser {
                 if (category != null) {
                     list.add(category);
                 } else {
-                    LOGGER.error("Failed to find category for {}", obj);
+                    LOGGER.warn("Failed to find category for {}", obj);
                 }
             }
         }
@@ -325,7 +332,7 @@ public class TechsJsonParser {
                 }
             }
         } else if (json != null) {
-            LOGGER.error(
+            LOGGER.warn(
                     "Unexpected JSON type for {} pattern: {} {}",
                     type,
                     json,
@@ -404,6 +411,9 @@ public class TechsJsonParser {
                     }
                 }
             }
+        } else if (json instanceof JSONArray) {
+            // DOM Pattern JSONArrays are ignored here
+            // They will be added as Simple DOM Patterns
         } else {
             LOGGER.debug(
                     "Unexpected JSON type for {} pattern: {} {}",
@@ -468,10 +478,10 @@ public class TechsJsonParser {
                 } else if (values[i].startsWith(FIELD_VERSION)) {
                     ap.setVersion(values[i].substring(FIELD_VERSION.length()));
                 } else {
-                    LOGGER.error("Unexpected field: {}", values[i]);
+                    LOGGER.warn("Unexpected field: {}", values[i]);
                 }
             } catch (Exception e) {
-                LOGGER.error("Invalid field syntax {}", values[i], e);
+                LOGGER.warn("Invalid field syntax {}", values[i], e);
             }
         }
         if (pattern.indexOf(FIELD_CONFIDENCE) > -1) {
@@ -491,7 +501,7 @@ public class TechsJsonParser {
             }
             return Integer.parseInt(confidence);
         } catch (NumberFormatException nfe) {
-            LOGGER.error("Invalid field value: {}", confidence);
+            LOGGER.warn("Invalid field value: {}", confidence);
             return 0;
         }
     }

@@ -54,13 +54,13 @@ import org.zaproxy.zap.extension.pscan.PluginPassiveScanner;
  * </ul>
  *
  * @see <a
- *     href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Cross-Origin_Resource_Policy_(CORP)">CORP
+ *     href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Cross-Origin_Resource_Policy">CORP
  *     on MDN</a>
  * @see <a
- *     href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy">COEP
+ *     href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Embedder-Policy">COEP
  *     on MDN</a>
  * @see <a
- *     href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy">COOP
+ *     href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cross-Origin-Opener-Policy">COOP
  *     on MDN</a>
  * @see <a href="https://fetch.spec.whatwg.org/#cross-origin-resource-policy-header">COOP Specs</a>
  * @see <a href="https://html.spec.whatwg.org/multipage/origin.html#coep">COEP Specs</a>
@@ -77,7 +77,8 @@ public class SiteIsolationScanRule extends PluginPassiveScanner
                 new HashMap<>(
                         CommonAlertTag.toMap(
                                 CommonAlertTag.OWASP_2021_A04_INSECURE_DESIGN,
-                                CommonAlertTag.OWASP_2017_A03_DATA_EXPOSED));
+                                CommonAlertTag.OWASP_2017_A03_DATA_EXPOSED,
+                                CommonAlertTag.SYSTEMIC));
         alertTags.put(PolicyTag.PENTEST.getTag(), "");
         alertTags.put(PolicyTag.QA_STD.getTag(), "");
         ALERT_TAGS = Collections.unmodifiableMap(alertTags);

@@ -26,7 +26,6 @@ import static org.hamcrest.Matchers.is;
 
 import java.util.List;
 import java.util.Map;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.parosproxy.paros.core.scanner.Alert;
 import org.parosproxy.paros.network.HttpMessage;
@@ -49,7 +48,7 @@ class XPoweredByHeaderInfoLeakScanRuleUnitTest
         // Given / When
         Map<String, String> tags = rule.getAlertTags();
         // Then
-        assertThat(tags.size(), is(equalTo(5)));
+        assertThat(tags.size(), is(equalTo(6)));
         assertThat(
                 tags.containsKey(CommonAlertTag.OWASP_2021_A01_BROKEN_AC.getTag()),
                 is(equalTo(true)));
@@ -71,6 +70,9 @@ class XPoweredByHeaderInfoLeakScanRuleUnitTest
         assertThat(
                 tags.get(CommonAlertTag.WSTG_V42_INFO_08_FINGERPRINT_APP_FRAMEWORK.getTag()),
                 is(equalTo(CommonAlertTag.WSTG_V42_INFO_08_FINGERPRINT_APP_FRAMEWORK.getValue())));
+        assertThat(
+                tags.get(CommonAlertTag.SYSTEMIC.getTag()),
+                is(equalTo(CommonAlertTag.SYSTEMIC.getValue())));
     }
 
     @Test
@@ -83,13 +85,6 @@ class XPoweredByHeaderInfoLeakScanRuleUnitTest
         assertThat(alert.getRisk(), is(equalTo(Alert.RISK_LOW)));
         assertThat(alert.getConfidence(), is(equalTo(Alert.CONFIDENCE_MEDIUM)));
         assertThat(alert.getCweId(), is(equalTo(497)));
-    }
-
-    @Test
-    @Override
-    @Disabled("Until zaproxy/zap-extensions#5204 is merged")
-    public void shouldHaveValidReferences() {
-        super.shouldHaveValidReferences();
     }
 
     @Test

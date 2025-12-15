@@ -2,7 +2,18 @@
     "@programName": [[${programName}]],
     "@version": [[${zapVersion}]],
     "@generated": [[${generatedString}]],
-    "site":[ [#th:block th:each="site, siteState: ${reportData.sites}"][#th:block th:if="${! siteState.first}"],[/th:block]
+	"created": [[${created}]],[#th:block th:if="${reportData.reportObjects.get('insightsList') != null}"]
+	"insights":[[#th:block th:each="ins, insState: ${reportData.reportObjects.get('insightsList')}"][#th:block th:if="${! insState.first}"],[/th:block]
+		{
+			"level": "[(${ins.level})]",
+			"reason": "[(${ins.reason})]",
+			"site": "[(${ins.site})]",
+			"key": "[(${ins.key})]",
+			"description": "[(${ins.description})]",
+			"statistic": "[(${ins.statistic})]"
+		}[/th:block]
+    ],[/th:block]
+	"site":[ [#th:block th:each="site, siteState: ${reportData.sites}"][#th:block th:if="${! siteState.first}"],[/th:block]
         {
             "@name": "[(${helper.legacyEscapeText(site, true)})]",
             "@host": "[(${helper.legacyEscapeText(helper.getHostForSite(site), true)})]",
@@ -22,6 +33,7 @@
                         {
                             "id": "[(${instance.alertId})]",
                             "uri": "[(${helper.legacyEscapeText(instance.uri, true)})]",
+                            "nodeName": [[${helper.getNodeName(instance)}]],
                             "method": "[(${helper.legacyEscapeText(instance.method, true)})]",
                             "param": "[(${helper.legacyEscapeTextAlertParam(instance, true)})]",
                             "attack": "[(${helper.legacyEscapeText(instance.attack, true)})]",
@@ -34,6 +46,7 @@
                         }[/th:block]
                     ],
                     "count": "[(${instances.size})]",
+                    "systemic": [[${helper.isSystemic(alert)}]],
                     "solution": "[(${helper.legacyEscapeParagraph(alert.solution, true)})]",
                     "otherinfo": "[(${helper.legacyEscapeParagraph(alert.otherinfo, true)})]",
                     "reference": "[(${helper.legacyEscapeParagraph(alert.reference, true)})]",
@@ -88,6 +101,12 @@
     "statistics":{ [#th:block th:each="stat, statState: ${helper.getGlobalStats('')}"][#th:block th:if="${! statState.first}"],[/th:block]
         [[${stat.key}]]: [[${stat.value}]]
         [/th:block]
-    }[/th:block]
+    }[/th:block][#th:block th:with="progress=${reportData.reportObjects.get('automation.progress')}" th:if="${reportData.isIncludeSection('afstate')}" ],
+    "afPlanErrors": [[#th:block th:if="${progress && progress.errors}"][#th:block th:each="error, errorState: ${progress.errors}"][#th:block th:if="${! errorState.first}"],[/th:block]
+        [[${error}]][/th:block][/th:block]
+    ],
+    "afPlanWarns": [[#th:block th:if="${progress && progress.warnings}"][#th:block th:each="warn, warnState: ${progress.warnings}"][#th:block th:if="${! warnState.first}"],[/th:block]
+        [[${warn}]][/th:block][/th:block]
+    ][/th:block]
 }
 
